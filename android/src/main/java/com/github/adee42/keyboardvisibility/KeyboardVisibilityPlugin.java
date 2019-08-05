@@ -9,6 +9,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import io.flutter.app.FlutterActivity;
 
 import android.app.Activity;
 import android.app.Application;
@@ -60,6 +61,7 @@ public class KeyboardVisibilityPlugin implements StreamHandler, Application.Acti
     @Override
     public void onActivityStarted(Activity activity) {
         try {
+            if(!(activity instanceof FlutterActivity)) return;
             mainView = ((ViewGroup)activity.findViewById(android.R.id.content)).getChildAt(0);
             mainView.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
@@ -78,6 +80,7 @@ public class KeyboardVisibilityPlugin implements StreamHandler, Application.Acti
 
     @Override
     public void onActivityStopped(Activity activity) {
+        if(!(activity instanceof FlutterActivity)) return;
         unregisterListener();
     }
 
@@ -87,7 +90,7 @@ public class KeyboardVisibilityPlugin implements StreamHandler, Application.Acti
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-
+        if(!(activity instanceof FlutterActivity)) return;
         unregisterListener();
     }
 
